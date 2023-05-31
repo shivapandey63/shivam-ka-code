@@ -1,0 +1,25 @@
+from Cryptodome.Cipher import AES
+from Cryptodome.Util.Padding import pad, unpad
+from Cryptodome.Random import get_random_bytes
+
+
+def encrypt(plaintext, key):
+    cipher = AES.new(key, AES.MODE_ECB)
+    cipher_text = cipher.encrypt(pad(plaintext, AES.block_size))
+    return cipher_text
+
+
+def decrypt(ciphertext, key):
+    cipher = AES.new(key, AES.MODE_ECB)
+    plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
+    return plaintext
+
+
+key = get_random_bytes(32)  # for 64-bit key
+plaintext = b'This is a secret message'
+
+encrypted = encrypt(plaintext, key)
+decrypted = decrypt(encrypted, key)
+
+print(encrypted)
+print(decrypted)
